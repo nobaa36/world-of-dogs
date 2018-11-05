@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html style="height:100%">
+<head>
+    <meta charset="UTF-8">    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{url_for('static', filename='tab_icon.png')}}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> 
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles.css')}}">
+    <title>World of Dogs</title>
+</head>
+<body style="height:100%">
+    <div class="container-fluid h-5 text-right">                                            <!-- log in section -->
+        <label id='logInLabel'>{{session["username"]}}</label>                              <!-- display username (send by app) -->
+        <a href="{{url_for('login')}}">
+            <button type="button" class="btn btn-outline-primary m-2">
+            {% if 'username' in session %}                                                  <!-- change button label if user logged in -->
+            Log out
+            {% else %}
+            Log in / Sign Up
+            {% endif %}
+            </button>
+        </a>
+    </div>                                                                                  <!-- log in section -->
+    <header class="row align-items-center no-gutters">                                      <!-- header section -->
+        <div class="col-sm-6  text-center text-sm-right"  ><a href="{{url_for('index')}}"><h1>World of Dogs</h1></a></div>
+        <div class="col-sm-6 " ><img class="img-fluid" src="{{url_for('static', filename='header.jpg')}}" ></div>
+    </header>                                                                               <!-- header section -->
+    <nav id="nav" class="container-fluid row no-gutters">                                   <!-- nav bar section -->
+        <div class="col-sm-6 d-flex justify-content-start">
+            <a href="{{url_for('index')}}"><button type="button" class="bg-white btn btn-outline-primary my-2 m-sm-2">Home</button></a>
+            <a href="{{url_for('contact')}}"><button type="button" class="bg-white btn btn-outline-primary m-2">Contact</button></a>
+        </div>
+        <div class="col-sm-6 d-flex justify-content-center justify-content-sm-end">
+            <div class='my-2' id='inputWrapper'>
+                <input id='searchInput' class="form-control " type="text">
+                <div id='searchHints' onClick="closeHints()" class="list-group text-capitalize"></div>          
+            </div>
+            <button class="btn btn-info my-2" onClick='searchButton()'>Search</button>
+        </div>
+    </nav>                                                                                  <!-- nav bar section -->
+    <main class="row w-100 no-gutters">                                                     <!-- left column and pictures section -->
+        <div class="col-md-2"  id='leftColumn' >                                            
+            <ul class="list-group list-group-flush text-center text-capitalize" id="accordion">
+                <div onClick="breedDrop()" class='list-group-item bg-light font-weight-bold '>Pick up breed</div>
+                {% for breed in breeds %}                                                   
+                    {% if breeds[breed]|length == 0 %}                                               <!-- if no subbreeeds display only breeds-->
+                    <div class='hide'>
+                        <a  href="{{url_for('breed',breed=breed)}}">
+                            <li class='clickable list-group-item list-group-item-action'>{{breed}}</li>
+                        </a>
+                    </div>
+                    {% else %}                                                                      <!-- else subbreeds display everything-->
+                    <div class='hide card border border-right-0 '>                                                         
+                        <div class='card-header p-0'>                                                                    
+                            <div class='card-link p-3' data-toggle='collapse' href='#collapse{{breed}}'>{{breed}}</div>
+                        </div>
+                        <div id='collapse{{breed}}' class='collapse' data-parent='#accordion'>
+                        {% for subbreed in breeds[breed] %}
+                            <a href="{{url_for('breed',breed=breed,subbreed=subbreed)}}">
+                                <div class='clickable card-body border border-bottom-0 border-right-0'>{{breed}}-{{subbreed}}</div>
+                            </a>
+                        {% endfor%}
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-10">
+            <div class='row w-100 no-gutters'>
+                <div class="col-sm-12 d-flex align-self-start ">
+                    {% block body %}{% endblock %}                                              <!-- inject code here  -->
+                </div> 
+                <div class="container-fluid d-flex justify-content-center">
+                    {% block pagination %}{% endblock pagination %}                             <!-- inject pagination here-->
+                </div>
+            </div>
+        </div>
+    </main>                                                                                     <!-- left column and pictures section -->
+    {% block hiddenWindow %}{% endblock hiddenWindow %}                                         <!-- inject code for large picture here -->
+                                                                                            
+<script src="{{url_for('static', filename='script.js')}}"></script>
+</body>
+</html>

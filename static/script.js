@@ -1,9 +1,9 @@
 $(document).ready(function(){         
-    //activate searching (onkeyup event)                                           
+    //Activate searching (onkeyup event)                                           
     search();                  
-    //return true if mobile phone detected                                                  
+    //Return true if mobile phone detected                                                  
     detectmobile();                                  
-    //a few adjustments for mobile devices                            
+    //A few adjustments for mobile devices                            
     mobileAdjustments();                     
   });
 
@@ -26,19 +26,19 @@ function search() {
             $('#searchHints').css("display","none");                                                   
         }
         $('#searchHints').text("");
-        //filter breeds by value of input field, show first 5 results
+        //Filter breeds by value of input field, show first 5 results
         $("#accordion .clickable").filter(":contains("+value+"):lt(5)").each(function() {    
             $('#searchHints').append("<a href=/breeds/"+$(this).text().replace("-", "/")+"><div class='list-group-item list-group-item-action'>"+$(this).text()+"</div></a>");
         });                                                                              
         if (key.which==13) {                                                                
             searchButton();
         }
-        //set width of hints to input width
+        //Set width of hints to input width
         $('#searchHints div').css("width",$('#inputWrapper').width());                       
     });
 }
 function searchButton() {                           
-    //select firs found element                               
+    //Select firs found element                               
     var firstHint=$('#searchHints a :first-child').html();                         
     window.location=("/breeds/"+firstHint.replace("-", "/"));
     closeHints();                                                                  
@@ -50,9 +50,9 @@ function closeHints() {
 function enlargePix(link) {                                                       
     $('#hiddenWindow').removeClass('invisible');                                  
     $('#largePix').attr("src",link);                    
-    //extract dog name from link                          
+    //Extract dog name from link                          
     $('#largePixLabel').text(getDogName(link));                 
-    //prevent picture from overdisplaying window                  
+    //Prevent picture from overdisplaying window                  
     $('#largePix').css('max-height',window.innerHeight*0.8);                      
 }
 function closeHiddenWindow() {                                                     
@@ -61,7 +61,7 @@ function closeHiddenWindow() {
 function carousel(data,dogsArray) {                                                
     dogsArray=dogsArray.split(",");
     var currentLink=$("#largePix").attr("src"); 
-    //find index of current link if dogs array                                   
+    //Find index of current link if dogs array                                   
     var indexOfCurrentLink=function() {                                            
         for (x in dogsArray) {
             if (trimLink(dogsArray[x])==currentLink){
@@ -69,34 +69,34 @@ function carousel(data,dogsArray) {
             }
         }
     }
-    //if next clicked
+    //If next clicked
     if (data==="next") {                                                           
         closeHiddenWindow();       
-        //trigger new hidden window with another link (using found index in dogs array)                                                
+        //Trigger new hidden window with another link (using found index in dogs array)                                                
         enlargePix(trimLink(dogsArray[Math.min(Number(indexOfCurrentLink())+1,dogsArray.length-1)]));                     
     } else {                                                                       
         closeHiddenWindow();
-        //do the same if prev clicked
+        //Do the same if prev clicked
         enlargePix(trimLink(dogsArray[Math.max(Number(indexOfCurrentLink())-1,0)]));;
     }
 }
 function trimLink(link) {
     return link.replace("[","").replace("]","").replace(/'/g,"").trim()
 }
-//extract dog name , one parameter (url)
+//Extract dog name , one parameter (url)
 function getDogName(myObj){                                                        
     var myObj=myObj.slice(30);                                                     
     var x;
     var myChar;
     var myDogName="";
-    //for every letter in link
+    //For every letter in link
     for (x=0;x<myObj.length;x++) {                                                 
         myChar=myObj.charAt(x);
-        //search for slash (/)
+        //Search for slash (/)
         if (myObj.charCodeAt(x)==47) {                                             
             return myDogName;                                                      
         }
-    //build dog name letter by letter
+    //Build dog name letter by letter
     myDogName+=myChar;                                                              
     }   
 }
@@ -120,7 +120,7 @@ function mobileAdjustments() {
 
     }
 }
-//drop breed list (when vertically mobile is using) 
+//Drop breed list (when vertically mobile is using) 
 function breedDrop() {        
     if ($('.hide').css('display') === "block") {
         $('.hide').css('display','none');                                                              

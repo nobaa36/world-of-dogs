@@ -75,9 +75,9 @@ def contact():
         # Create email
         msg.attach(MIMEText(message, 'plain'))                                                 
         # Server settings
-        server = smtplib.SMTP('smtp.123-reg.co.uk',25)                                          
+        server = smtplib.SMTP('',25)                           #-----------------> Remove this data before sending to GitHub               
         server.ehlo()
-        server.login("admin@worldofdogs.info", "Lukf12jaw911@")                                 #-----------------> Remove this data before sending to GitHub
+        server.login("", "")                                 
         text = msg.as_string()
         # Send email and display massage if ok or not
         try:
